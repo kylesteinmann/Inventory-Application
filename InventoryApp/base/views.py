@@ -8,8 +8,6 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
 
-
-
 class HomeView(TemplateView):
     template_name = 'home.html'
 

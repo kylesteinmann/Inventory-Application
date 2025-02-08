@@ -1,0 +1,119 @@
+@startuml
+
+' User related entities
+class User {
+  - id: int
+  - username: string
+  - password_hash: string
+  - email: string
+  - role: UserRole
+  - department: string
+  - phone: string
+  - active: boolean
+}
+
+enum UserRole {
+  ADMIN
+  GENERAL
+  EMPLOYEE
+}
+
+' Inventory related entities
+class InventoryItem {
+  - id: int
+  - name: string
+  - value: float
+  - quantity: int
+  - status: ItemStatus
+  - category: string
+  - sub_category: string
+  - brand: string
+  - model: string
+  - color: string
+  - minimum_quantity: int
+  - reorder_point: int
+  - location: string
+  - last_maintained: date
+}
+
+enum ItemStatus {
+  AVAILABLE
+  IN_USE
+  MAINTENANCE
+  DAMAGED
+  DISPOSED
+}
+
+class Checkout {
+  - id: int
+  - checkout_date: datetime
+  - due_date: datetime
+  - return_date: datetime
+  - condition_on_checkout: string
+  - condition_on_return: string
+  - status: CheckoutStatus
+  - notes: string
+}
+
+enum CheckoutStatus {
+  ACTIVE
+  OVERDUE
+  RETURNED
+  LOST
+}
+
+class MaintenanceRecord {
+  - id: int
+  - date: datetime
+  - description: string
+  - cost: float
+  - performed_by: string
+  - next_maintenance_date: datetime
+}
+
+class DisposalRecord {
+  - id: int
+  - date: datetime
+  - reason: string
+  - disposal_method: string
+  - authorized_by: string
+  - replacement_ordered: boolean
+}
+
+class ReorderRequest {
+  - id: int
+  - date: datetime
+  - quantity: int
+  - status: RequestStatus
+  - priority: Priority
+  - approved_by: string
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  ORDERED
+  RECEIVED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+' Relationships
+User "1" -- "*" Checkout: performs
+InventoryItem "1" -- "*" Checkout: involved in
+InventoryItem "1" -- "*" MaintenanceRecord: has
+InventoryItem "1" -- "*" DisposalRecord: has
+InventoryItem "1" -- "*" ReorderRequest: generates
+
+@enduml
+
+
+
+
+
+

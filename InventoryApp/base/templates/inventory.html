@@ -1,0 +1,24 @@
+{% extends 'home.html' %}
+
+{% block title %}Inventory - IMS{% endblock %}
+
+{% block extra_css %}
+    {% include 'css/inventory-css.html' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="mt-2 mb-5 mx-3 d-flex justify-content-between align-items-center">
+        <h1>Inventory</h1>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
+            Add Item
+        </button>
+    </div>
+    {% include 'modals/add_item_modal.html' %}
+    {% include 'modals/update_item_model.html' %}
+    {% include 'tables/inventory_table.html' %}
+{% endblock %} 
+
+{% block extra_js %}
+    {% include 'js/inventory-js.html' %}
+{% endblock %}

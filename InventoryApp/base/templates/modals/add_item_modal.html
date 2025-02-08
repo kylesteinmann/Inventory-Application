@@ -1,0 +1,95 @@
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addItemModalLabel">Add New Inventory Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="inventoryForm" method="post" action="{% url 'base:add_item' %}">
+          {% csrf_token %}
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.name.id_for_label }}">Name</label>
+                {{ add_item_form.name }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.status.id_for_label }}">Status</label>
+                {{ add_item_form.status }}
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.category.id_for_label }}">Category</label>
+                {{ add_item_form.category }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.sub_category.id_for_label }}">Sub Category</label>
+                {{ add_item_form.sub_category }}
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.brand.id_for_label }}">Brand</label>
+                {{ add_item_form.brand }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.model.id_for_label }}">Model</label>
+                {{ add_item_form.model }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.color.id_for_label }}">Color</label>
+                {{ add_item_form.color }}
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.value.id_for_label }}">Value</label>
+                {{ add_item_form.value }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.reorder.id_for_label }}">Reorder</label>
+                {{ add_item_form.reorder }}
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.location.id_for_label }}">Location</label>
+                {{ add_item_form.location }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="{{ add_item_form.last_maintained.id_for_label }}">Last Maintained</label>
+                {{ add_item_form.last_maintained }}
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

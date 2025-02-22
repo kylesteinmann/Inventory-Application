@@ -1,0 +1,74 @@
+body {
+    padding-top: 60px;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.container-fluid {
+    width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.table-responsive {
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+
+.table {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 0.5rem;
+}
+
+.form-section-title {
+    color: #6c757d;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-dialog {
+    max-width: 800px;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.dataTables_filter {
+    float: right;
+}
+
+.dataTables_length {
+    margin-bottom: 20px;
+}
+
+.dataTables_length label {
+    font-weight: bold;
+    color: #333;
+}
+
+.dataTables_length select {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    background-color: #f8f9fa;
+}
+

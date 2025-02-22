@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import InventoryItem
+from .models import InventoryItem, Checkout
 from django.views import View
 from .forms import InventoryItemForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
+from datetime import timedelta
+from django.utils import timezone
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -63,10 +65,48 @@ class DeleteInventoryItemView(LoginRequiredMixin, DeleteView):
         self.object.delete()
         return redirect('base:inventory')
     
+
 class CheckoutsView(LoginRequiredMixin, TemplateView):
     template_name = 'checkouts.html'
-
     login_url = 'base:login'
+    model = Checkout.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        checkouts = Checkout.objects.filter(return_date__isnull=True)
+        checkout_history = Checkout.objects.filter(return_date__isnull=False)
+        context['checkouts'] = checkouts
+        context['checkout_history'] = checkout_history
+
+        return context
+
+class CheckinItemView(LoginRequiredMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        Checkout.objects.update_or_create(
+            user=request.user,
+            item=InventoryItem.objects.get(pk=self.kwargs['pk']),
+            defaults={
+                'return_date': timezone.now(),
+                'due_date': timezone.now() + timedelta(days=7),
+            },
+        )
+
+
+        InventoryItem.objects.filter(pk=self.kwargs['pk']).update(status='Availible')
+        
+        return redirect(reverse_lazy('base:inventory'))
+
+class CheckoutItemView(LoginRequiredMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        Checkout.objects.create(
+            user=request.user,
+            item=InventoryItem.objects.get(pk=self.kwargs['pk']),
+            checkout_date=timezone.now(),
+            due_date=timezone.now() + timedelta(days=7),
+        )
+        InventoryItem.objects.filter(pk=self.kwargs['pk']).update(status='CHECKED OUT')
+        
+        return redirect(reverse_lazy('base:inventory'))
 
 
 class MaintenanceView(LoginRequiredMixin, TemplateView):

@@ -21,9 +21,16 @@
                 {% for item in inventory_items %}
                 <tr>
                     <td class="text-nowrap text-center">
-                        <a href="#" class="text-primary" onclick="editItem('{{ item.id }}', '{{ item.name|escapejs }}', '{{ item.value }}', '{{ item.status|escapejs }}', '{{ item.category|escapejs }}', '{{ item.sub_category|escapejs }}', '{{ item.brand|escapejs }}', '{{ item.model|escapejs }}', '{{ item.color|escapejs }}', {{ item.reorder|yesno:'true,false' }}, '{{ item.location|escapejs }}', '{{ item.last_maintained|date:'Y-m-d' }}')">
+                        <a href="#" class="text-primary"
+                            onclick="editItem('{{ item.id }}', '{{ item.name|escapejs }}', '{{ item.value }}', '{{ item.status|escapejs }}', '{{ item.category|escapejs }}', '{{ item.sub_category|escapejs }}', '{{ item.brand|escapejs }}', '{{ item.model|escapejs }}', '{{ item.color|escapejs }}', {{ item.reorder|yesno:'true,false' }}, '{{ item.location|escapejs }}', '{{ item.last_maintained|date:'Y-m-d' }}')">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
+
+                        {% if item.status != 'CHECKED OUT' %}
+                        <span class="mx-1"> | </span>
+                        <a href="{%url 'base:checkout' item.id %}" class="text-primary"> <i class="fas fa-check"></i>
+                        </a>
+                        {%endif%}
                     </td>
                     <td class="text-nowrap">{{item.name}}</td>
                     <td class="text-nowrap">{{item.value}}</td>

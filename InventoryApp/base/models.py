@@ -20,6 +20,7 @@ class InventoryItem(models.Model):
         ('MAINTENANCE', 'Maintenance'),
         ('DAMAGED', 'Damaged'),
         ('DISPOSED', 'Disposed'),
+        ('CHECTED_OUT', 'Checked Out')
     )
 
     name = models.CharField(max_length=200)

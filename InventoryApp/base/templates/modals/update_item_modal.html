@@ -20,8 +20,8 @@
               <div class="form-group mb-3">
                 <label for="edit_status">Status</label>
                 <select class="form-control" id="edit_status" name="status">
-                  {% for status_value, status_label in add_item_form.fields.status.choices %}
-                    <option value="{{ status_value }}">{{ status_label }}</option>
+                  {% for status_value, status_label in form.fields.status.choices %}
+                  <option value="{{ status_value }}">{{ status_label }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -72,7 +72,7 @@
               <div class="form-group mb-3">
                 <label for="edit_reorder">Reorder</label>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="edit_reorder" name="reorder">
+                  <input type="checkbox" class="form-check-input" id="edit_reorder" name="reorder">
                 </div>
               </div>
             </div>
@@ -92,14 +92,14 @@
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
-            <button type="button" class="btn btn-danger" onclick="deleteItem()">Delete Item</button>
-            <div>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
+
+
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="update_item">Save Changes</button>
           </div>
-        </form>
       </div>
+      </form>
     </div>
   </div>
+</div>
 </div>

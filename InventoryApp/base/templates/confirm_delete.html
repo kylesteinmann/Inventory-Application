@@ -1,0 +1,17 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<div class="container mt-5 w-100 d-flex flex-column justify-content-center align-items-center">
+
+  <h2 class="mt-5">Confirm Delete</h2>
+  <p>Are you sure you want to delete "{{ item }}"?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">
+      <i class="fas fa-trash-alt"></i> Confirm Delete
+    </button>
+    <a href="{% url 'base:inventory' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+  <h2>User Management</h2>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+            data-user-id="{{ user.id }}" data-username="{{ user.username }}" data-first-name="{{ user.first_name }}"
+            data-last-name="{{ user.last_name }}" data-email="{{ user.email }}">
+            Edit
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+            data-user-id="{{ user.id }}" data-username="{{ user.username }}">
+            Delete
+          </button>
+          {%if user.is_active%}
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#deactivateModal"
+            data-user-id="{{ user.id }}" data-user-name="{{ user.username }}">
+            Deactivate
+          </button>
+          {%endif%}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+    Create New User
+  </button>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'base:user_management' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="create">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createModalLabel">Create User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>First Name</label>
+            <input type="text" name="first_name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Last Name</label>
+            <input type="text" name="last_name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'base:user_management' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="edit">
+        <input type="hidden" name="user_id" id="edit-user-id">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Username</label>
+            <input type="text" name="username" id="edit-username" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>First Name</label>
+            <input type="text" name="first_name" id="edit-first-name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Last Name</label>
+            <input type="text" name="last_name" id="edit-last-name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" id="edit-email" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Password (leave blank to keep current)</label>
+            <input type="password" name="password" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'base:user_management' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="user_id" id="delete-user-id">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete user <strong id="delete-username"></strong>?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Yes, Delete</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Deactivate Modal -->
+<div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'base:user_management' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="deactivate">
+        <input type="hidden" name="user_id" id="deactivate-user-id">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deactivateModalLabel">Deactivate User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to deactivate user <strong id="deactivate-username"></strong>?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-warning">Yes, Deactivate</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript to populate modals -->
+<script>
+  // Edit Modal population
+  var editModal = document.getElementById('editModal');
+  editModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+    var userId = button.getAttribute('data-user-id');
+    var username = button.getAttribute('data-username');
+    var firstName = button.getAttribute('data-first-name');
+    var lastName = button.getAttribute('data-last-name');
+    var email = button.getAttribute('data-email');
+    editModal.querySelector('#edit-user-id').value = userId;
+    editModal.querySelector('#edit-username').value = username;
+    editModal.querySelector('#edit-first-name').value = firstName;
+    editModal.querySelector('#edit-last-name').value = lastName;
+    editModal.querySelector('#edit-email').value = email;
+  });
+
+  // Delete Modal population
+  var deleteModal = document.getElementById('deleteModal');
+  deleteModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+    var userId = button.getAttribute('data-user-id');
+    var username = button.getAttribute('data-username');
+    console.log("Delete modal opened for user:", userId, username); // Debug log
+    deleteModal.querySelector('#delete-user-id').value = userId;
+    deleteModal.querySelector('#delete-username').textContent = username;
+  });
+
+  // Deactivate Modal population
+  var deactivateModal = document.getElementById('deactivateModal');
+  deactivateModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+    var userId = button.getAttribute('data-user-id');
+    var username = button.getAttribute('data-user-name');
+    deactivateModal.querySelector('#deactivate-user-id').value = userId;
+    deactivateModal.querySelector('#deactivate-username').textContent = username;
+  });
+</script>
+{% endblock %}
